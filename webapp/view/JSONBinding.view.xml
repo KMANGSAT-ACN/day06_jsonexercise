@@ -1,0 +1,95 @@
+<mvc:View controllerName="sapips.training.jsonbinding.controller.JSONBinding" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" 
+            xmlns="sap.m" 
+            xmlns:f="sap.ui.layout.form">
+    <Page id="page" title="{i18n>title}">
+        <content>
+            <Panel id="mainPanel" headerText="Data Binding Basics" class="sapUiResponsiveMargin" width="auto">
+                <content>
+                    <f:SimpleForm id="simpleForm1">
+                        <f:content>
+                            <Label text='EID' id="leid" />
+                            <Input value="{myAddress>/EID}" enabled="{myAddress>/Enabled}" id="iEID" />
+                            <Label text="Enabled" id="lEnabled" />
+                            <CheckBox id="cEnabled" selected="{myAddress>/Enabled}" />
+                        </f:content>
+                    </f:SimpleForm>
+                </content>
+            </Panel>
+            <Panel id="psub1" headerText="Address Details" class="sapUiResponsiveMargin" width="auto">
+                <content>
+                    <f:SimpleForm id="simpleForm2">
+                        <f:content>
+                            <Label text='Address' id="lAddress" />
+                            <Text text="{myAddress>/Address/Street} {myAddress>/Address/Zip} {myAddress>/Address/City} {myAddress>/Address/Country}" id="tAddress" class="sapUiSmallMarginBottom" />
+                            <Link text="Send Email" id='lEmail'
+                                href="{ path: 'myAddress>/EID', formatter: '.formatter.formatMail'}" />
+                            <Label text="Sales Amount" id="lSales" class="sapUiSmallMarginBegin" />
+                            <Input
+                                value="{ parts: [ {path: 'myAddress>/SalesAmount'}, 
+                                    {path: 'myAddress>/CurrencyCode'} ], 
+                                    type: 'sap.ui.model.type.Currency', 
+                                    formatOptions: {showMeasure: false} }"
+                                id="iSales"
+                                maxLength="8"
+                                class="sapUiSmallMarginBegin"
+                            />
+                        </f:content>
+                    </f:SimpleForm>
+                </content>
+            </Panel>
+            <Panel id="psub3" headerText="Aggregation Binding" class="sapUiResponsiveMargin" width="auto">
+                <content>
+                    <List items="{ProductsModel>/Products}" id='lProducts' mode="SingleSelectMaster"
+                            selectionChange="onSelectedChange">
+                        <items>
+                            <ObjectListItem
+                                title="{ProductsModel>ProductName}"
+                                number="{ parts: [ {path: 'ProductsModel>UnitPrice'},
+                                               {path: 'myAddress>/CurrencyCode'} ],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: { showMeasure: false } }"
+                                numberUnit="{myAddress>/CurrencyCode}"
+                                id='oListItem'
+                            >
+                                <ObjectAttribute text='{ProductsModel>QuantityPerUnit}' id='oaQuantity' />
+                                <ObjectAttribute
+                                    title="Current Stock value"
+                                    id="oaStock"
+                                    text="{ parts: [ { path: 'ProductsModel>UnitPrice'},
+                                                        { path: 'ProductsModel>UnitInStock'},
+                                                        { path: 'myAddress>/CurrencyCode'} ],
+                                                        formatter: '.formatter.formatStockValue' }"
+                                />
+                            </ObjectListItem>
+                        </items>
+                    </List>
+                </content>
+            </Panel>
+            <Panel id="psub4" headerText="Product Details" class="sapUiResponsiveMargin" width="auto">
+                <content>
+                    <f:SimpleForm id="simpleForm4">
+                        <f:content>
+                        <Label text="Product ID" id="lProductID" />
+                        <Input id="iProductID" value="{ProductsModel>ProductID}" />
+
+                        <Label text="Product Name" id="lProductName" />
+                        <Input id="iProductName" value="{ProductsModel>ProductName}" />
+
+                        <Label text="Quantity Per Unit" id="lQuantity" />
+                        <Input id="iQuantity" value="{ProductsModel>QuantityPerUnit}" />
+
+                        <Label text="Unit Price" id="lUnitPrice" />
+                        <Input id="iUnitPrice" value="{ProductsModel>UnitPrice}" />
+
+                        <Label text="Units In Stock" id="lUnits" />
+                        <Input id="iUnits" value="{ProductsModel>UnitsInStock}" />
+
+                        <Label text="Discontinued" id="lDiscontinued" />
+                        <Input id="iDiscontinued" value="{ProductsModel>Discontinued}" />
+                        </f:content>
+                    </f:SimpleForm>
+                </content>
+            </Panel>
+        </content>
+    </Page>
+</mvc:View>
